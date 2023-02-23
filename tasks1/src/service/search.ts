@@ -23,7 +23,7 @@ const searchSpaces = (text: string): Promise<Results> => {
         name: `${text} number ${index}`,
       }));
 
-      res(spaces);
+      res({ spaces });
     }, Math.round(Math.random() * 1000 * 3));
   });
 };
