@@ -28,7 +28,7 @@ export const searchSpaces = (searchText: string): Promise<Results> => {
     setTimeout(() => {
       if (random() > CHANCE_OF_FAILURE) {
         const spaces = ALL_PARKING_SPACES.filter(
-          ({ name }) => name.indexOf(searchText) !== -1
+          ({name}) => name.indexOf(searchText) !== -1
         );
         res({ spaces });
       } else {
@@ -38,17 +38,7 @@ export const searchSpaces = (searchText: string): Promise<Results> => {
   });
 };
 
-export const delay = (ms: number): Promise<void> => {
-  return new Promise((resolve) => setTimeout(resolve, ms));
-}
-
-export const delayedSearchSpaces = async (text: string, ms: number): Promise<Results> => {
-  const results = await searchSpaces(text)
-  await delay(ms)
-  return results;
-}
-
- /**
-  * 5) Invent some reusable way to limit execution of functions like searchSpaces() to an arbitrary value ie. 1000 ms
-  * 6) Invent a "way" to run functions like searchSpaces() with retries on reject.
-  */
+/**
+ * 5) Invent some reusable way to limit execution of functions like searchSpaces() to an arbitrary value ie. 1000 ms
+ * 6) Invent a "way" to run functions like searchSpaces() with retries on reject.
+ */

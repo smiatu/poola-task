@@ -9,7 +9,7 @@ type Address = {
   country: string;
 };
 
-const generateAdresses = (country: string) => (street: string) => (
+const generateAddresses = (country: string) => (street: string) => (
   from: number,
   to: number
 ): Address[] =>
@@ -19,9 +19,9 @@ const generateAdresses = (country: string) => (street: string) => (
   }));
 
 const ALL_ADDRESSES: Address[] = [
-  ...generateAdresses("UK")("Downing")(100, 120),
-  ...generateAdresses("IT")("Milanese")(21, 50),
-  ...generateAdresses("DE")("BankStrasse")(51, 80),
+  ...generateAddresses("UK")("Downing")(100, 120),
+  ...generateAddresses("IT")("Milanese")(21, 50),
+  ...generateAddresses("DE")("BankStrasse")(51, 80),
 ];
 
 const CHANCE_OF_FAILURE = 0.1;

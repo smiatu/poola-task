@@ -1,50 +1,82 @@
 import React from 'react'
 import _ from 'lodash'
-import { delayedSearchSpaces, Results, Space } from "../../service/search";
+import { delayedSearch } from "../../service/common";
 
-const Search = () => {
-    const [filteredList, setFilteredList] = React.useState<Space[]>([]);
-    const [inputValue, setInputValue] = React.useState<string>('');
-    const [isLoading, setIsLoading] = React.useState<boolean>(false);
-    const [isError, setIsError] = React.useState<boolean>(false);
+export type Results = {
+  spaces?: Space[];
+  addresses?: Address[];
+}
 
-    const debouncedSearchSpaces = React.useCallback(
-        _.debounce((inputValue) => {
-          setIsLoading(true);
-            delayedSearchSpaces(inputValue, 500)
-                .then((res: Results) => {
-                  setIsLoading(false);
-                  setFilteredList(res.spaces)
-                })
-                .catch(() => {
-                  setIsLoading(false);
-                  setIsError(true)
-                  setFilteredList([])
-                });
-        }, 500),
-        []
-    );
+type Address = {
+  address: string;
+  country: string;
+};
 
-    const onInputChange = (inputValue: string) => {
-        setInputValue(inputValue)
-        debouncedSearchSpaces(inputValue)
+type Space = {
+  name: string;
+};
+
+type SearchProps = {
+  searchType: 'space' | 'address';
+}
+
+const Search = ({searchType}: SearchProps) => {
+  const [filteredList, setFilteredList] = React.useState<Space[] | Address[]>([]);
+  const [inputValue, setInputValue] = React.useState<string>('');
+  const [isLoading, setIsLoading] = React.useState<boolean>(false);
+  const [isError, setIsError] = React.useState<boolean>(false);
+  
+  const debouncedSearch = React.useCallback(
+    _.debounce((inputValue: string) => {
+      setIsLoading(true);
+      setIsError(false);
+      delayedSearch(inputValue, 500, searchType)
+        .then((res: Results) => {
+          setIsLoading(false);
+          setFilteredList(res.spaces || res.addresses || [])
+        })
+        .catch(() => {
+          setIsLoading(false);
+          setIsError(true)
+          setFilteredList([])
+        });
+    }, 500),
+    []
+  );
+  
+  const onInputChange = (inputValue: string) => {
+    setInputValue(inputValue)
+    debouncedSearch(inputValue)
+  }
+  
+  let searchResults;
+  if (filteredList.length > 0) {
+    if (searchType === 'space') {
+      searchResults = (filteredList as any[]).map((element: Space) => (
+        <li key={element.name}>
+          {element.name}
+        </li>
+      ));
+    } else {
+      searchResults = (filteredList as any[]).map((element: Address) => (
+        <li key={Math.random()}>
+          {element.address} {element.country}
+        </li>
+      ));
     }
-
-    let searchResults = filteredList?.map((element) => (
-        <li key={element.name}>{element.name}</li>
-    ));
-
-    return (
-        <div>
-            <input type={"text"} value={inputValue} onChange={e => onInputChange(e.target.value)}/>
-            <ul>
-                {searchResults}
-            </ul>
-            {isLoading && <p>Loading...</p>}
-            {isError && <p>Error, please reload the page.</p>}
-            {(!isLoading && filteredList?.length === 0) && <p>No search results</p>}
-        </div>
-    )
+  }
+  
+  return (
+    <div>
+      <input type={"text"} value={inputValue} onChange={e => onInputChange(e.target.value)}/>
+      <ul>
+        {searchResults}
+      </ul>
+      {isLoading && <p>Loading...</p>}
+      {isError && <p>Error, please reload the page.</p>}
+      {(!isLoading && filteredList?.length === 0) && <p>No search results</p>}
+    </div>
+  )
 }
 
 export default Search;

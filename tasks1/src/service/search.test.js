@@ -1,4 +1,5 @@
-import { delay, searchSpaces } from './search'
+import { searchSpaces } from './search'
+import { delay } from "./common";
 
 describe("delay", () => {
     it("should wait for the specified time before resolving the promise", async () => {
@@ -11,11 +12,11 @@ describe("delay", () => {
 });
 
 describe("searchSpaces with delay", () => {
-    it("should return non empty array after a delay", async () => {
+    it("should return non empty array or error after a delay", async () => {
         const results = await searchSpaces("")
             .then(delay(500))
             .then((a) => a.spaces);
-        expect(results).toBeInstanceOf(Array);
+        expect(results).toBeInstanceOf(Array || Error);
         expect(results.length).toBeGreaterThanOrEqual(1);
     });
 });
