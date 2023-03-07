@@ -1,18 +1,12 @@
 import { range, random } from "lodash";
 
-type Results = {
+export type Results = {
   spaces: Space[];
 };
 
-type Space = {
+export type Space = {
   name: string;
 };
-
-/**
- * TODO:
- * 1) //Fix the API
- * 2) Extract functions for generating numbers.
- */
 
 const generateSpaces = (text: string) => (from: number, to: number) =>
   range(from, to).map((index) => ({
@@ -29,14 +23,14 @@ const CHANCE_OF_FAILURE = 0.1;
 const MIN_TIME_MILLIS = 100;
 const MAX_TIME_MILLIS = 1000;
 
-const searchSpaces = (searchText: string): Promise<Results> => {
+export const searchSpaces = (searchText: string): Promise<Results> => {
   return new Promise((res, rej) => {
     setTimeout(() => {
       if (random() > CHANCE_OF_FAILURE) {
         const spaces = ALL_PARKING_SPACES.filter(
-          ({ name }) => name.indexOf(searchText) !== -1
+          ({name}) => name.indexOf(searchText) !== -1
         );
-        res(spaces);
+        res({ spaces });
       } else {
         rej(new Error("Network error"));
       }
@@ -44,4 +38,7 @@ const searchSpaces = (searchText: string): Promise<Results> => {
   });
 };
 
-export { searchSpaces };
+/**
+ * 5) Invent some reusable way to limit execution of functions like searchSpaces() to an arbitrary value ie. 1000 ms
+ * 6) Invent a "way" to run functions like searchSpaces() with retries on reject.
+ */
