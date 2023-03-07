@@ -13,12 +13,12 @@ type Space = {
  * 1) Fix the API
  * 2) Extract functions for generating numbers.
  */
+const count = Math.round(1 + Math.random() * 3);
 
 const searchSpaces = (text: string): Promise<Results> => {
   return new Promise((res, rej) => {
     setTimeout(() => {
-      const count = Math.round(1 + Math.random() * 3);
-
+      
       const spaces = range(count).map((index) => ({
         name: `${text} number ${index}`,
       }));
@@ -27,6 +27,10 @@ const searchSpaces = (text: string): Promise<Results> => {
     }, Math.round(Math.random() * 1000 * 3));
   });
 };
+
+export const delay = (ms: number): Promise<void> => {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
 
 /**
  * TODO:
