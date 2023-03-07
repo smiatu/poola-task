@@ -12,7 +12,9 @@ describe("delay", () => {
 
 describe("searchSpaces with delay", () => {
     it("should return non empty array after a delay", async () => {
-        const results = await searchSpaces("").then(delay(500)).then((a) => a.spaces);
+        const results = await searchSpaces("")
+            .then(delay(500))
+            .then((a) => a.spaces);
         expect(results).toBeInstanceOf(Array);
         expect(results.length).toBeGreaterThanOrEqual(1);
     });

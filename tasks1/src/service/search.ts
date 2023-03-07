@@ -1,10 +1,10 @@
 import range from "lodash/range";
 
-type Results = {
+export type Results = {
   spaces: Space[];
 };
 
-type Space = {
+export type Space = {
   name: string;
 };
 
@@ -25,6 +25,12 @@ const searchSpaces = (text: string): Promise<Results> => {
 
 export const delay = (ms: number): Promise<void> => {
   return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+export const delayedSearchSpaces = async (text: string, ms: number): Promise<Results> => {
+  const results = await searchSpaces(text)
+  await delay(ms)
+  return results;
 }
 
  /**
