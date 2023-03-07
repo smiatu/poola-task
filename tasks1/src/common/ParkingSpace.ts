@@ -27,9 +27,9 @@
  * Good luck!
  */
 
-type ParkingSpace = {
+export type ParkingSpace = {
   name: string;
   getOwnerhipInfo: (day: number) => { owner: string | undefined };
 };
 
-export type { ParkingSpace };
+/* export type { ParkingSpace }; */
