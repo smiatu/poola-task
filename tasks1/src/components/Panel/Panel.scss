@@ -1,0 +1,52 @@
+$primary-color: #EF6C00;
+$bg-color: #FFF9EE;
+
+.accordion {
+  .MuiAccordionSummary-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    .MuiTypography-root {
+      font-weight: 500;
+    }
+    .MuiButtonBase-root.MuiButton-root {
+      border-color: $primary-color;
+      color: $primary-color;
+    }
+  }
+
+  &__details {
+    display: flex;
+    flex-direction: column;
+    .MuiFormControl-root {
+      margin: 1rem 0;
+      input {
+        color: $primary-color;
+      }
+      &:focus-within {
+        opacity: 0.5;
+      }
+      &>label {
+        color: $primary-color;
+      }
+    }
+    .MuiInputAdornment-root>.MuiIconButton-root {
+      color: $primary-color;
+    }
+    .MuiButtonBase-root.MuiButton-root {
+      color: $primary-color;
+    }
+    // below is a try to override blue MUI focusing,
+    // it's not working but I recall it's really hard to win
+    // with these blueish MUI accents and it can take hours to be done
+    .Mui-focused:focus-within {
+      .MuiInputBase-input.MuiInput-input::after {
+        border-bottom: 2px solid black;
+      }
+    }
+  }
+}
+.MuiPaper-root.MuiAccordion-root {
+  width: 500px;
+  background-color: $bg-color;
+}
